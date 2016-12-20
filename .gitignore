@@ -1,0 +1,5 @@
+.DS_Store
+.*.sw*
+npm-debug.log
+node_modules
+/.env
