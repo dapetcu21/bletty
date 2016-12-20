@@ -17,7 +17,7 @@ class Device {
 
   async writeData (buffer) {
     for (let offset = 0; offset < buffer.length; offset += 16) {
-      if (offset) { await delay(3) } // Wait 3ms between each 16byte burst
+      if (offset) { await delay(20) } // Wait 20ms between each 16byte burst
       this.sendData(buffer.slice(offset, offset + 16))
     }
   }
