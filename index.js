@@ -10,7 +10,7 @@ const Device = require('./src/device')
 
 const args = minimist(process.argv.slice(2))
 
-if (!args._.length) {
+if (args.h || args.help) {
   help()
   process.exit(1)
 }
@@ -41,7 +41,6 @@ noble.on('discover', peripheral => {
         const characteristic = characteristics.find(c => c.uuid === characteristicUUID)
         if (!characteristic) { return }
 
-        console.log(`Connected to ${name} (${address})...`)
         noble.stopScanning()
 
         let device = new Device({ address, name, args })

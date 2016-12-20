@@ -1,6 +1,5 @@
 'use strict'
 
-const packet = require('./packet')
 const tty = require('./tty')
 
 const delay = (timeout) => new Promise(resolve => { setTimeout(resolve, timeout) })
@@ -14,7 +13,6 @@ class Device {
   }
 
   onRecieveData (buffer) {
-    this.parser(buffer)
   }
 
   async writeData (buffer) {
@@ -38,10 +36,9 @@ class Device {
     this.sequence = Math.floor(Math.random() * 255)
     this.requestQueue = Promise.resolve()
     this.sendData = sendData
-    this.parser = packet.makeParser(this._onRecievePacket)
 
     async function run () {
-      await tty(this.args._[0])
+      await tty(this)
     }
 
     setTimeout(() => {
