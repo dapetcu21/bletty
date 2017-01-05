@@ -17,7 +17,12 @@ class Device {
 
   async writeData (buffer) {
     for (let offset = 0; offset < buffer.length; offset += 16) {
-      if (offset) { await delay(20) } // Wait 20ms between each 16byte burst
+       // Wait 20ms between each 16byte burst
+      const currentTime = Date.now()
+      const delayTime = 20 - (currentTime - this.lastBurst)
+      if (delayTime > 0) { await delay(delayTime) }
+      this.lastBurst = currentTime
+
       this.sendData(buffer.slice(offset, offset + 16))
     }
   }
@@ -33,7 +38,7 @@ class Device {
   onConnect (sendData) {
     console.log(`Connected to ${this.name} (${this.address})`)
     this.connected = true
-    this.sequence = Math.floor(Math.random() * 255)
+    this.lastBurst = Date.now()
     this.requestQueue = Promise.resolve()
     this.sendData = sendData
 
