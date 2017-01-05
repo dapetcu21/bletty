@@ -1,12 +1,14 @@
 'use strict'
 
-const pty = require('pty.js')
+const pty = require('pty.js/build/Release/pty.node')
+const fs = require('fs')
 
 module.exports = async function tty (device) {
   const tty = pty.open(80, 25)
   console.log(tty.pty)
 
-  const socket = tty.master
+  const socket = fs.createReadStream(null, { fd: tty.master, highWaterMark: 16 })
+  // const socket = tty.master
   socket.on('error', err => {
     console.error(err)
     process.exit(1)
